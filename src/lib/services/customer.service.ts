@@ -22,7 +22,12 @@ export class CustomerService {
       .range((page - 1) * limit, page * limit - 1);
 
     if (branch_id) query = query.eq('branch_id', branch_id);
-    if (search) query = query.or(`name.ilike.%${search}%,phone.ilike.%${search}%,email.ilike.%${search}%`);
+    if (search) {
+      const normalizedSearch = search.replace(/[%,()]/g, (character) => `\\${character}`);
+      query = query.or(
+        `name.ilike.%${normalizedSearch}%,phone.ilike.%${normalizedSearch}%,email.ilike.%${normalizedSearch}%`,
+      );
+    }
     if (tags?.length) query = query.overlaps('tags', tags);
 
     const { data, error, count } = await query;
