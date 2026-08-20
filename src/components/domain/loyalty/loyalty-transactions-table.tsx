@@ -24,10 +24,17 @@ const typeColors: Record<string, string> = {
   EXPIRED: 'bg-gray-100 text-gray-800',
 };
 
-export function LoyaltyTransactionsTable() {
+interface LoyaltyTransactionsTableProps {
+  transactions: LoyaltyTransaction[];
+}
+
+export function LoyaltyTransactionsTable({ transactions }: LoyaltyTransactionsTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
 
-  const data = useMemo(() => [] as LoyaltyTransaction[], []);
+  const data = useMemo(() => transactions.filter((tx) => {
+    const query = search.trim().toLowerCase();
+    return !query || tx.transaction_type.toLowerCase().includes(query) || tx.description.toLowerCase().includes(query);
+  }), [transactions, search]);
 
   return (
     <div className="space-y-4">

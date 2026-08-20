@@ -24,11 +24,18 @@ const tierColors: Record<string, string> = {
   PLATINUM: 'bg-purple-100 text-purple-800',
 };
 
-export function LoyaltyMembersTable() {
+interface LoyaltyMembersTableProps {
+  members: LoyaltyMember[];
+}
+
+export function LoyaltyMembersTable({ members }: LoyaltyMembersTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as LoyaltyMember[], []);
+  const data = useMemo(() => members.filter((member) => {
+    const query = search.trim().toLowerCase();
+    return !query || member.customer_id.toLowerCase().includes(query);
+  }), [members, search]);
 
   return (
     <div className="space-y-4">

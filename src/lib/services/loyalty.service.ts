@@ -1,8 +1,21 @@
 import { createSupabaseClient } from '@/lib/supabase/server';
 import { SettingsService } from './settings.service';
 import type { LoyaltySettings } from '@/types';
+import type { LoyaltyMember, LoyaltyTransaction } from '@/types/loyalty';
 
 export class LoyaltyService {
+  static async listMembers(limit = 100): Promise<{ data: LoyaltyMember[]; error: Error | null }> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('loyalty_members').select('*').order('created_at', { ascending: false }).limit(limit);
+    return { data: (data ?? []) as LoyaltyMember[], error: error ? new Error(error.message) : null };
+  }
+
+  static async listTransactions(limit = 100): Promise<{ data: LoyaltyTransaction[]; error: Error | null }> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('loyalty_transactions').select('*').order('created_at', { ascending: false }).limit(limit);
+    return { data: (data ?? []) as LoyaltyTransaction[], error: error ? new Error(error.message) : null };
+  }
+
   static async earnPoints(customerId: string, invoiceId: string, amount: number): Promise<void> {
     const supabase = await createSupabaseClient();
     const settings = await SettingsService.getValue<LoyaltySettings>('loyalty.settings');

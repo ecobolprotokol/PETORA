@@ -1,7 +1,22 @@
 import { createSupabaseClient } from '@/lib/supabase/server';
 import type { PaginatedResponse } from '@/types';
+import type { CommissionRule, PerformanceMetric } from '@/types/employee';
 
 export class EmployeeService {
+  static async listCommissionRules(): Promise<CommissionRule[]> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('commission_rules').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as CommissionRule[];
+  }
+
+  static async listPerformanceMetrics(): Promise<PerformanceMetric[]> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('performance_metrics').select('*').order('period_end', { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as PerformanceMetric[];
+  }
+
   static async listEmployees(params: { page?: number; limit?: number; role?: string }) {
     const supabase = await createSupabaseClient();
     const { page = 1, limit = 20, role } = params;

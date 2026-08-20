@@ -21,8 +21,12 @@ const statusColors: Record<string, string> = {
   PAID: 'bg-blue-100 text-blue-800',
 };
 
-export function ExpenseApprovalTable() {
-  const data = useMemo(() => [] as Expense[], []);
+interface ExpenseApprovalTableProps {
+  expenses: Expense[];
+}
+
+export function ExpenseApprovalTable({ expenses }: ExpenseApprovalTableProps): React.ReactElement {
+  const data = useMemo(() => expenses, [expenses]);
 
   return (
     <div className="space-y-4">

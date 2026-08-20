@@ -1,7 +1,15 @@
 import { createSupabaseClient } from '@/lib/supabase/server';
 import type { PaginatedResponse } from '@/types';
+import type { ExpenseCategory } from '@/types/expense';
 
 export class ExpenseService {
+  static async listCategories(): Promise<ExpenseCategory[]> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('expense_categories').select('*').order('name', { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as ExpenseCategory[];
+  }
+
   static async listExpenses(params: { page?: number; limit?: number; status?: string; branch_id?: string }) {
     const supabase = await createSupabaseClient();
     const { page = 1, limit = 20, status, branch_id } = params;
