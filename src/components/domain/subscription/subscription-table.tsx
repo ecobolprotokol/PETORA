@@ -24,11 +24,18 @@ const statusColors: Record<string, string> = {
   EXPIRED: 'bg-gray-100 text-gray-800',
 };
 
-export function SubscriptionTable() {
+interface SubscriptionTableProps {
+  subscriptions: Subscription[];
+}
+
+export function SubscriptionTable({ subscriptions }: SubscriptionTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo<Subscription[]>(() => [], []);
+  const data = useMemo(() => subscriptions.filter((subscription) => {
+    const query = search.trim().toLowerCase();
+    return !query || subscription.subscription_number.toLowerCase().includes(query) || subscription.status.toLowerCase().includes(query);
+  }), [subscriptions, search]);
 
   return (
     <div className="space-y-4">

@@ -22,10 +22,17 @@ const statusColors: Record<string, string> = {
   CLOSED: 'bg-gray-100 text-gray-800',
 };
 
-export function FeedbackTable() {
+interface FeedbackTableProps {
+  feedback: Feedback[];
+}
+
+export function FeedbackTable({ feedback }: FeedbackTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
 
-  const data = useMemo(() => [] as Feedback[], []);
+  const data = useMemo(() => feedback.filter((item) => {
+    const query = search.trim().toLowerCase();
+    return !query || (item.category ?? '').toLowerCase().includes(query) || (item.comment ?? '').toLowerCase().includes(query) || item.status.toLowerCase().includes(query);
+  }), [feedback, search]);
 
   return (
     <div className="space-y-4">

@@ -25,11 +25,18 @@ const statusColors: Record<string, string> = {
   NO_SHOW: 'bg-gray-100 text-gray-800',
 };
 
-export function TelemedicineSessionTable() {
+interface TelemedicineSessionTableProps {
+  sessions: TelemedicineSession[];
+}
+
+export function TelemedicineSessionTable({ sessions }: TelemedicineSessionTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as TelemedicineSession[], []);
+  const data = useMemo(() => sessions.filter((session) => {
+    const query = search.trim().toLowerCase();
+    return !query || session.session_number.toLowerCase().includes(query) || session.status.toLowerCase().includes(query);
+  }), [sessions, search]);
 
   return (
     <div className="space-y-4">

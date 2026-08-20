@@ -28,11 +28,18 @@ const roleColors: Record<string, string> = {
   CUSTOMER: 'bg-gray-100 text-gray-800',
 };
 
-export function EmployeeTable() {
+interface EmployeeTableProps {
+  employees: Employee[];
+}
+
+export function EmployeeTable({ employees }: EmployeeTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Employee[], []);
+  const data = useMemo(() => employees.filter((employee) => {
+    const query = search.trim().toLowerCase();
+    return !query || employee.full_name.toLowerCase().includes(query) || employee.username.toLowerCase().includes(query) || employee.role.toLowerCase().includes(query);
+  }), [employees, search]);
 
   return (
     <div className="space-y-4">

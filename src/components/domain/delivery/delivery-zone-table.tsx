@@ -17,11 +17,18 @@ import {
 import { Search, Plus } from 'lucide-react';
 import type { DeliveryZone } from '@/types/delivery';
 
-export function DeliveryZoneTable() {
+interface DeliveryZoneTableProps {
+  zones: DeliveryZone[];
+}
+
+export function DeliveryZoneTable({ zones }: DeliveryZoneTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as DeliveryZone[], []);
+  const data = useMemo(() => zones.filter((zone) => {
+    const query = search.trim().toLowerCase();
+    return !query || zone.name.toLowerCase().includes(query) || zone.postal_codes.join(' ').includes(query);
+  }), [zones, search]);
 
   return (
     <div className="space-y-4">
