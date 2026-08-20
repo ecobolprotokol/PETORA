@@ -37,9 +37,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col items-center mb-8">
-        <PawPrint className="h-12 w-12 text-primary mb-2" />
-        <h1 className="text-2xl font-bold">Petora</h1>
+      <div className="mb-8 flex flex-col items-center gap-3 text-center">
+        <div className="flex size-16 items-center justify-center rounded-3xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+          <PawPrint className="size-8" />
+        </div>
+        <h1 className="text-3xl font-semibold tracking-tight">Petora</h1>
         <p className="text-muted-foreground">Sistem Manajemen Pet</p>
       </div>
       <form onSubmit={handleSubmit} className="w-full space-y-4">

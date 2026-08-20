@@ -22,21 +22,21 @@ export default function KioskHome() {
       description: 'Check-in menggunakan kode booking',
       icon: QrCode,
       href: '/(kiosk)/check-in',
-      color: 'bg-blue-500',
+                  color: 'bg-primary',
     },
     {
       title: 'Booking Baru',
       description: 'Buat janji temu untuk hewan',
       icon: Calendar,
       href: '/(kiosk)/booking',
-      color: 'bg-green-500',
+                  color: 'bg-secondary text-secondary-foreground',
     },
     {
       title: 'Cek Status',
       description: 'Lihat status antrian saat ini',
       icon: Clock,
       href: '/(kiosk)/status',
-      color: 'bg-purple-500',
+                  color: 'bg-accent text-accent-foreground',
     },
   ];
 

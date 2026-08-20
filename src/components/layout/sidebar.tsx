@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { PawPrint, LayoutDashboard, Users, Cat, Calendar, Stethoscope, Hotel, Scissors, Package, ShoppingCart, FileText, CreditCard, Settings, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
@@ -32,7 +33,13 @@ const navItems: NavItem[] = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { sidebarOpen, toggleSidebar } = useUIStore();
+  const { sidebarOpen, toggleSidebar, setSidebarOpen } = useUIStore();
+
+  useEffect(() => {
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      setSidebarOpen(false);
+    }
+  }, [setSidebarOpen]);
 
   return (
     <>
@@ -41,17 +48,20 @@ export function Sidebar() {
       )}
       <aside
         className={cn(
-          'fixed top-0 left-0 z-50 h-full bg-card border-r transition-all duration-300',
-          sidebarOpen ? 'w-64' : 'w-16',
-          'hidden lg:block'
+          'fixed top-0 left-0 z-50 h-full border-r bg-card shadow-xl transition-all duration-300',
+          sidebarOpen ? 'w-72' : 'w-16',
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
+          'lg:block'
         )}
       >
         <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center justify-between px-4 border-b">
+          <div className="flex h-20 items-center justify-between border-b bg-primary px-4 text-primary-foreground">
             {sidebarOpen && (
-              <Link href="/dashboard" className="flex items-center gap-2 font-bold">
-                <PawPrint className="h-6 w-6 text-primary" />
-                <span>Petora</span>
+              <Link href="/dashboard" className="flex items-center gap-3 font-semibold tracking-tight">
+                <span className="flex size-10 items-center justify-center rounded-2xl bg-primary-foreground/15">
+                  <PawPrint className="size-5" />
+                </span>
+                <span className="text-lg">Petora</span>
               </Link>
             )}
             <button onClick={toggleSidebar} className="p-2 hover:bg-accent rounded-md">
@@ -64,7 +74,7 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                  'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
                   pathname === item.href
                     ? 'bg-primary/10 text-primary'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'

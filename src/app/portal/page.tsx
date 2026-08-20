@@ -23,7 +23,7 @@ function StatCard({ title, value, subtitle, href, icon: Icon }: {
 }) {
   return (
     <Link href={href}>
-      <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+      <Card className="rounded-2xl p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10 text-primary">
             <Icon className="size-5" />
