@@ -127,7 +127,7 @@ INSERT INTO loyalty_tiers (tier_name, min_points, min_spending, point_multiplier
 -- ============================================
 -- PIN: 123456 (hashed with bcrypt)
 INSERT INTO users (username, pin_hash, role, full_name, is_active) VALUES
-('owner', '$2a$10$XlM0F0Q0XlM0F0Q0XlM0FO5vQ0XlM0F0Q0XlM0F0Q0XlM0F0Q0XlM', 'OWNER', 'Default Owner', true);
+('owner@petora.app', '$2a$10$XlM0F0Q0XlM0F0Q0XlM0FO5vQ0XlM0F0Q0XlM0F0Q0XlM0F0Q0XlM', 'OWNER', 'Demo Owner', true);
 
 -- ============================================
 -- DEFAULT BRANCH

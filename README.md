@@ -98,25 +98,16 @@ npm run seed         # Seed database
 
 ## Seed Demo Accounts
 
-Demo accounts are created through Supabase Auth Admin API and synchronized to `public.profiles`. The seeder does not contain credentials, role lists, branch IDs, or other account data in source code; provide them at runtime through `DEMO_ACCOUNTS_JSON`.
+The default SQL seed (`supabase/seed/0001_default_data.sql`) provisions one aligned legacy owner identity: `owner@petora.app` / `Demo Owner`. The Supabase Auth account is then created or updated by `scripts/seed-demo-accounts.mjs`, which synchronizes the same identity to `public.profiles`. All Auth credentials are configured through one server-only environment variable, `DEMO_ACCOUNTS`; passwords are never stored in SQL.
 
 ```bash
 export SUPABASE_URL="https://<project-ref>.supabase.co"
 export SUPABASE_SERVICE_ROLE_KEY="<server-only-service-role-key>"
-export DEMO_ACCOUNTS_JSON='[
-  {"email":"owner@petora.local","password":"<strong-password>","role":"OWNER","full_name":"Demo Owner","branch_id":null},
-  {"email":"admin@petora.local","password":"<strong-password>","role":"ADMIN","full_name":"Demo Admin","branch_id":null},
-  {"email":"manager@petora.local","password":"<strong-password>","role":"MANAGER","full_name":"Demo Manager","branch_id":null},
-  {"email":"doctor@petora.local","password":"<strong-password>","role":"DOKTER","full_name":"Demo Doctor","branch_id":null},
-  {"email":"cashier@petora.local","password":"<strong-password>","role":"KASIR","full_name":"Demo Cashier","branch_id":null},
-  {"email":"groomer@petora.local","password":"<strong-password>","role":"GROOMER","full_name":"Demo Groomer","branch_id":null},
-  {"email":"courier@petora.local","password":"<strong-password>","role":"COURIER","full_name":"Demo Courier","branch_id":null},
-  {"email":"customer@petora.local","password":"<strong-password>","role":"CUSTOMER","full_name":"Demo Customer","branch_id":null}
-]'
+export DEMO_ACCOUNTS="OWNER|owner@petora.local|<strong-password>|Demo Owner|;ADMIN|admin@petora.local|<strong-password>|Demo Admin|;MANAGER|manager@petora.local|<strong-password>|Demo Manager|;DOKTER|doctor@petora.local|<strong-password>|Demo Doctor|;KASIR|cashier@petora.local|<strong-password>|Demo Cashier|;GROOMER|groomer@petora.local|<strong-password>|Demo Groomer|;COURIER|courier@petora.local|<strong-password>|Demo Courier|;CUSTOMER|customer@petora.local|<strong-password>|Demo Customer|"
 npm run seed:demo-accounts
 ```
 
-The seed supports every application role: `OWNER`, `ADMIN`, `MANAGER`, `DOKTER`, `KASIR`, `GROOMER`, `COURIER`, and `CUSTOMER`. Replace the example values with environment-managed credentials and, for staff accounts, the UUID of the target branch; never commit the service-role key or real passwords.
+Format setiap akun: `ROLE|EMAIL|PASSWORD|FULL_NAME|BRANCH_ID`, dipisahkan dengan `;`. `BRANCH_ID` opsional dan boleh kosong. Seeder membuat atau memperbarui Supabase Auth users, mengonfirmasi email, mengatur role di `app_metadata`, dan meng-upsert profile langsung ke Supabase. Jangan commit service-role key atau password asli.
 
 ## Environment Variables
 
