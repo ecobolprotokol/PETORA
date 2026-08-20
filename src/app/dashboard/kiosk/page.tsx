@@ -1,8 +1,14 @@
 import { KioskTable } from '@/components/domain/kiosk/kiosk-table';
 import { KioskService } from '@/lib/services/kiosk.service';
+import type { Kiosk } from '@/types/kiosk';
 
 export default async function KioskPage(): Promise<React.ReactElement> {
-  const kiosks = await KioskService.listKiosks();
+  let kiosks: Kiosk[] = [];
+  try {
+    kiosks = await KioskService.listKiosks();
+  } catch {
+    kiosks = [];
+  }
   return (
     <div className="space-y-6">
       <div>
