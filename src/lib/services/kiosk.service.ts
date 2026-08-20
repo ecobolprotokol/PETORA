@@ -5,10 +5,7 @@ export class KioskService {
   static async listKiosks(): Promise<Kiosk[]> {
     const supabase = await createSupabaseClient();
     const { data, error } = await supabase.from('kiosks').select('*').order('device_name', { ascending: true });
-    if (error) {
-      if (error.code === 'PGRST205') return [];
-      throw error;
-    }
+    if (error) throw error;
     return (data ?? []) as Kiosk[];
   }
 }

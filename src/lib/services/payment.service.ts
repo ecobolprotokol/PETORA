@@ -29,16 +29,16 @@ export class PaymentService {
       .from('payments')
       .select('amount')
       .eq('invoice_id', invoiceId)
-      .eq('payment_status', 'VERIFIED');
+      .eq('status', 'verified');
 
     const { data: invoice } = await supabase
       .from('invoices')
-      .select('total_amount')
+      .select('total')
       .eq('id', invoiceId)
       .single();
 
     const total_paid = payments?.reduce((sum: number, p: { amount: number }) => sum + p.amount, 0) ?? 0;
-    const total_amount = invoice?.total_amount ?? 0;
+    const total_amount = invoice?.total ?? 0;
 
     let status: 'UNPAID' | 'PARTIAL_PAYMENT' | 'PAID' = 'UNPAID';
     if (total_paid >= total_amount) status = 'PAID';
@@ -63,8 +63,8 @@ export class PaymentService {
       .order('created_at', { ascending: false })
       .range((page - 1) * limit, page * limit - 1);
 
-    if (status) query = query.eq('payment_status', status);
-    if (payment_method) query = query.eq('payment_method', payment_method);
+    if (status) query = query.eq('status', status);
+    if (payment_method) query = query.eq('method', payment_method);
     if (invoice_id) query = query.eq('invoice_id', invoice_id);
 
     const { data, error, count } = await query;
@@ -85,8 +85,8 @@ export class PaymentService {
       .from('payments')
       .select('*')
       .eq('id', id)
-      .single();
-    if (error) return null;
+      .maybeSingle();
+    if (error) throw error;
     return data as Payment;
   }
 
@@ -106,7 +106,7 @@ export class PaymentService {
     let query = supabase
       .from('payments')
       .select('*')
-      .eq('payment_status', 'PENDING')
+      .eq('status', 'pending')
       .order('created_at', { ascending: false });
     if (invoiceId) query = query.eq('invoice_id', invoiceId);
     const { data, error } = await query;
