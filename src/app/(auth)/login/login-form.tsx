@@ -28,8 +28,8 @@ export function LoginForm() {
       if (!res.ok) throw new Error(data.error || 'Login failed');
       toast.success('Login berhasil');
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Login gagal');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Login gagal');
     } finally {
       setLoading(false);
     }

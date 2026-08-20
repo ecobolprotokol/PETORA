@@ -1,6 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createSupabaseClient } from '@/lib/supabase/middleware';
 
+function getRole(userMetadata: unknown): string | undefined {
+  if (typeof userMetadata !== 'object' || userMetadata === null) return undefined;
+  const role = (userMetadata as Record<string, unknown>).role;
+  return typeof role === 'string' ? role : undefined;
+}
+
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createSupabaseClient(request);
   const { data: { session } } = await supabase.auth.getSession();
@@ -16,14 +22,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (session && isAuthRoute) {
-    const role = (session.user.user_metadata as any)?.role;
+    const role = getRole(session.user.user_metadata);
     return NextResponse.redirect(
       new URL(role === 'CUSTOMER' ? '/portal' : '/dashboard', request.url)
     );
   }
 
   if (session) {
-    const role = (session.user.user_metadata as any)?.role;
+    const role = getRole(session.user.user_metadata);
     if (isPortalRoute && role !== 'CUSTOMER') {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }

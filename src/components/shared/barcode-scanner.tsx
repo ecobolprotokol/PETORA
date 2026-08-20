@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 export function BarcodeScanner({ onScan }: { onScan: (barcode: string) => void }) {
   const buffer = useRef<string>('');
-  const timeout = useRef<NodeJS.Timeout>();
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -13,7 +13,7 @@ export function BarcodeScanner({ onScan }: { onScan: (barcode: string) => void }
         buffer.current = '';
       } else {
         buffer.current += e.key;
-        clearTimeout(timeout.current);
+        if (timeout.current) clearTimeout(timeout.current);
         timeout.current = setTimeout(() => {
           buffer.current = '';
         }, 100);

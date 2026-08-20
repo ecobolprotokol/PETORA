@@ -1,7 +1,9 @@
 import { Suspense } from 'react';
 import { VoucherTable } from '@/components/domain/promotion/voucher-table';
+import { MarketingService } from '@/lib/services/marketing.service';
 
-export default function VouchersPage() {
+export default async function VouchersPage() {
+  const vouchers = await MarketingService.listVouchers();
   return (
     <div className="space-y-6">
       <div>
@@ -9,7 +11,7 @@ export default function VouchersPage() {
         <p className="text-muted-foreground">Kelola voucher pelanggan</p>
       </div>
       <Suspense fallback={<div>Loading vouchers...</div>}>
-        <VoucherTable />
+        <VoucherTable vouchers={vouchers} />
       </Suspense>
     </div>
   );

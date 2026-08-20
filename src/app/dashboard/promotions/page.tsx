@@ -1,7 +1,9 @@
 import { Suspense } from 'react';
 import { PromotionTable } from '@/components/domain/promotion/promotion-table';
+import { MarketingService } from '@/lib/services/marketing.service';
 
-export default function PromotionsPage() {
+export default async function PromotionsPage() {
+  const promotions = await MarketingService.listPromotions();
   return (
     <div className="space-y-6">
       <div>
@@ -9,7 +11,7 @@ export default function PromotionsPage() {
         <p className="text-muted-foreground">Kelola promosi dan diskon</p>
       </div>
       <Suspense fallback={<div>Loading promotions...</div>}>
-        <PromotionTable />
+        <PromotionTable promotions={promotions} />
       </Suspense>
     </div>
   );

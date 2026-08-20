@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,11 +17,18 @@ import {
 import { Search, Plus } from 'lucide-react';
 import type { Voucher } from '@/types/promotion';
 
-export function VoucherTable() {
+interface VoucherTableProps {
+  vouchers: Voucher[];
+}
+
+export function VoucherTable({ vouchers }: VoucherTableProps) {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Voucher[], []);
+  const data = vouchers.filter((voucher) => {
+    const query = search.trim().toLowerCase();
+    return !query || voucher.name.toLowerCase().includes(query) || voucher.code.toLowerCase().includes(query);
+  });
 
   return (
     <div className="space-y-4">
@@ -61,7 +68,7 @@ export function VoucherTable() {
                 <TableRow key={voucher.id}>
                   <TableCell className="font-medium">{voucher.code}</TableCell>
                   <TableCell>{voucher.name}</TableCell>
-                  <TableCell>{voucher.discount_type === 'percentage' ? `${voucher.discount_value}%` : `Rp ${voucher.discount_value.toLocaleString()}`}</TableCell>
+                  <TableCell>{voucher.discount_type === 'PERCENTAGE' ? `${voucher.discount_value}%` : `Rp ${voucher.discount_value.toLocaleString()}`}</TableCell>
                   <TableCell>{voucher.usage_count} / {voucher.usage_limit || '∞'}</TableCell>
                   <TableCell>
                     <Badge className={voucher.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
