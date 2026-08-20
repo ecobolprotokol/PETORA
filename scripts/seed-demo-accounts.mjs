@@ -2,28 +2,30 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-const accountsJson = process.env.DEMO_ACCOUNTS_JSON
 
-if (!supabaseUrl || !serviceRoleKey || !accountsJson) {
-  throw new Error('SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and DEMO_ACCOUNTS_JSON are required')
+if (!supabaseUrl || !serviceRoleKey) {
+  throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required')
 }
 
-const accounts = JSON.parse(accountsJson)
-if (!Array.isArray(accounts) || accounts.length === 0) {
-  throw new Error('DEMO_ACCOUNTS_JSON must contain a non-empty array')
-}
+const roles = ['OWNER', 'ADMIN', 'MANAGER', 'DOKTER', 'KASIR', 'GROOMER', 'COURIER', 'CUSTOMER']
+const accounts = roles.map((role) => {
+  const prefix = `DEMO_${role}`
+  const account = {
+    email: process.env[`${prefix}_EMAIL`],
+    password: process.env[`${prefix}_PASSWORD`],
+    role,
+    full_name: process.env[`${prefix}_FULL_NAME`],
+    branch_id: process.env[`${prefix}_BRANCH_ID`] ?? null,
+  }
 
-const requiredFields = ['email', 'password', 'role', 'full_name']
-for (const account of accounts) {
-  for (const field of requiredFields) {
-    if (typeof account?.[field] !== 'string' || account[field].trim() === '') {
-      throw new Error(`Each demo account requires a non-empty ${field}`)
+  for (const field of ['email', 'password', 'full_name']) {
+    if (!account[field]?.trim()) {
+      throw new Error(`${prefix}_${field.toUpperCase()} is required`)
     }
   }
-  if (account.branch_id !== undefined && account.branch_id !== null && typeof account.branch_id !== 'string') {
-    throw new Error('branch_id must be a UUID string or null')
-  }
-}
+
+  return account
+})
 
 const supabase = createClient(supabaseUrl, serviceRoleKey, {
   auth: { autoRefreshToken: false, persistSession: false },
@@ -70,7 +72,7 @@ async function ensureAccount(account) {
     id: userId,
     full_name: account.full_name,
     role: account.role,
-    branch_id: account.branch_id ?? null,
+    branch_id: account.branch_id,
   }, { onConflict: 'id' })
   if (profileError) throw profileError
 
@@ -80,4 +82,4 @@ async function ensureAccount(account) {
 const results = []
 for (const account of accounts) results.push(await ensureAccount(account))
 console.table(results)
-console.log(`Seeded ${results.length} demo accounts.`)
+console.log(`Seeded ${results.length} demo accounts directly in Supabase.`)
