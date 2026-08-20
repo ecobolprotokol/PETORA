@@ -98,20 +98,16 @@ npm run seed         # Seed database
 
 ## Seed Demo Accounts
 
-Demo accounts are created directly through the Supabase Auth Admin API and synchronized to `public.profiles`. Account credentials are read from individual server-only environment variables; the seeder does not use JSON configuration or hardcoded credentials.
+Demo accounts are created directly through the Supabase Auth Admin API and synchronized to `public.profiles`. All demo accounts are configured through one server-only environment variable, `DEMO_ACCOUNTS`; the seeder does not use JSON configuration or hardcoded credentials.
 
 ```bash
 export SUPABASE_URL="https://<project-ref>.supabase.co"
 export SUPABASE_SERVICE_ROLE_KEY="<server-only-service-role-key>"
-export DEMO_OWNER_EMAIL="owner@petora.local"
-export DEMO_OWNER_PASSWORD="<strong-password>"
-export DEMO_OWNER_FULL_NAME="Demo Owner"
-# Repeat EMAIL, PASSWORD, FULL_NAME for ADMIN, MANAGER, DOKTER, KASIR, GROOMER, COURIER, CUSTOMER.
-# Optional for staff: DEMO_<ROLE>_BRANCH_ID="<branch-uuid>"
+export DEMO_ACCOUNTS="OWNER|owner@petora.local|<strong-password>|Demo Owner|;ADMIN|admin@petora.local|<strong-password>|Demo Admin|;MANAGER|manager@petora.local|<strong-password>|Demo Manager|;DOKTER|doctor@petora.local|<strong-password>|Demo Doctor|;KASIR|cashier@petora.local|<strong-password>|Demo Cashier|;GROOMER|groomer@petora.local|<strong-password>|Demo Groomer|;COURIER|courier@petora.local|<strong-password>|Demo Courier|;CUSTOMER|customer@petora.local|<strong-password>|Demo Customer|"
 npm run seed:demo-accounts
 ```
 
-The seed supports every application role: `OWNER`, `ADMIN`, `MANAGER`, `DOKTER`, `KASIR`, `GROOMER`, `COURIER`, and `CUSTOMER`. It creates or updates Supabase Auth users, confirms their email, sets the role in `app_metadata`, and upserts their profile directly in Supabase. Never commit the service-role key or real passwords.
+Format setiap akun: `ROLE|EMAIL|PASSWORD|FULL_NAME|BRANCH_ID`, dipisahkan dengan `;`. `BRANCH_ID` opsional dan boleh kosong. Seeder membuat atau memperbarui Supabase Auth users, mengonfirmasi email, mengatur role di `app_metadata`, dan meng-upsert profile langsung ke Supabase. Jangan commit service-role key atau password asli.
 
 ## Environment Variables
 

@@ -7,24 +7,20 @@ if (!supabaseUrl || !serviceRoleKey) {
   throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required')
 }
 
-const roles = ['OWNER', 'ADMIN', 'MANAGER', 'DOKTER', 'KASIR', 'GROOMER', 'COURIER', 'CUSTOMER']
-const accounts = roles.map((role) => {
-  const prefix = `DEMO_${role}`
-  const account = {
-    email: process.env[`${prefix}_EMAIL`],
-    password: process.env[`${prefix}_PASSWORD`],
-    role,
-    full_name: process.env[`${prefix}_FULL_NAME`],
-    branch_id: process.env[`${prefix}_BRANCH_ID`] ?? null,
+const allowedRoles = new Set(['OWNER', 'ADMIN', 'MANAGER', 'DOKTER', 'KASIR', 'GROOMER', 'COURIER', 'CUSTOMER'])
+const seedAccounts = process.env.DEMO_ACCOUNTS
+
+if (!seedAccounts?.trim()) {
+  throw new Error('DEMO_ACCOUNTS is required')
+}
+
+const accounts = seedAccounts.split(';').map((entry, index) => {
+  const [role, email, password, full_name, branch_id = ''] = entry.split('|').map((value) => value.trim())
+  if (!allowedRoles.has(role) || !email || !password || !full_name) {
+    throw new Error(`Invalid DEMO_ACCOUNTS entry at position ${index + 1}. Expected ROLE|EMAIL|PASSWORD|FULL_NAME|BRANCH_ID`)
   }
 
-  for (const field of ['email', 'password', 'full_name']) {
-    if (!account[field]?.trim()) {
-      throw new Error(`${prefix}_${field.toUpperCase()} is required`)
-    }
-  }
-
-  return account
+  return { role, email, password, full_name, branch_id: branch_id || null }
 })
 
 const supabase = createClient(supabaseUrl, serviceRoleKey, {
