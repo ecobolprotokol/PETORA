@@ -28,8 +28,8 @@ export default function LoginPage() {
       if (!res.ok) throw new Error(data.error || 'Login failed');
       toast.success('Login berhasil');
       router.push('/dashboard');
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : 'Login gagal');
     } finally {
       setLoading(false);
     }

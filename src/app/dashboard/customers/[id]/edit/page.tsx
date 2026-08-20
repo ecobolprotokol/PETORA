@@ -9,7 +9,7 @@ export default function EditCustomerPage({ params }: { params: { id: string } })
         <h1 className="text-3xl font-bold">Edit Customer</h1>
         <p className="text-muted-foreground">Update customer information</p>
       </div>
-      <CustomerForm customer={{ id: params.id }} />
+      <CustomerForm id={params.id} />
     </div>
   );
 }

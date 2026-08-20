@@ -92,7 +92,7 @@ export async function updateDeliveryStatusAction(
     return { success: false, error: 'VALIDATION_ERROR', details: parsed.error.flatten() };
   }
   const { delivery_id, status, ...rest } = parsed.data;
-  const updates: Record<string, any> = { status, updated_at: new Date().toISOString() };
+  const updates: Record<string, unknown> = { status, updated_at: new Date().toISOString() };
   if (status === 'PICKED_UP') updates.picked_up_at = new Date().toISOString();
   if (status === 'DELIVERED') updates.delivered_at = new Date().toISOString();
   Object.assign(updates, rest);

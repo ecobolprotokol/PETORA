@@ -1,10 +1,11 @@
 import { createSupabaseClient } from '@/lib/supabase/server';
 import { SettingsService } from './settings.service';
+import type { LoyaltySettings } from '@/types';
 
 export class LoyaltyService {
   static async earnPoints(customerId: string, invoiceId: string, amount: number): Promise<void> {
     const supabase = await createSupabaseClient();
-    const settings = await SettingsService.getValue<any>('loyalty.settings');
+    const settings = await SettingsService.getValue<LoyaltySettings>('loyalty.settings');
     if (!settings?.enabled) return;
 
     let { data: member } = await supabase.from('loyalty_members').select('*').eq('customer_id', customerId).maybeSingle();
@@ -39,7 +40,7 @@ export class LoyaltyService {
     const { data: member } = await supabase.from('loyalty_members').select('*').eq('customer_id', customerId).single();
     if (!member || member.available_points < points) throw new Error('Insufficient points');
 
-    const settings = await SettingsService.getValue<any>('loyalty.settings');
+    const settings = await SettingsService.getValue<LoyaltySettings>('loyalty.settings');
     const discountValue = points * settings.point_value;
 
     await supabase.from('loyalty_transactions').insert({
@@ -57,7 +58,7 @@ export class LoyaltyService {
     const supabase = await createSupabaseClient();
     const { data: member } = await supabase.from('loyalty_members').select('*').eq('id', memberId).single();
     const { data: tiers } = await supabase.from('loyalty_tiers').select('*').order('min_points', { ascending: true });
-    const newTier = tiers?.find((tier: any) => member.total_points >= tier.min_points && member.total_spending >= tier.min_spending);
+    const newTier = tiers?.find((tier) => member.total_points >= tier.min_points && member.total_spending >= tier.min_spending);
     if (newTier && newTier.id !== member.tier_id) {
       await supabase.from('loyalty_members').update({ tier_id: newTier.id }).eq('id', memberId);
     }

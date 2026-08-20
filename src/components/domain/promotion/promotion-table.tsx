@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,11 +24,18 @@ const statusColors: Record<string, string> = {
   EXPIRED: 'bg-red-100 text-red-800',
 };
 
-export function PromotionTable() {
+interface PromotionTableProps {
+  promotions: Promotion[];
+}
+
+export function PromotionTable({ promotions }: PromotionTableProps) {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Promotion[], []);
+  const data = promotions.filter((promotion) => {
+    const query = search.trim().toLowerCase();
+    return !query || promotion.name.toLowerCase().includes(query) || promotion.code.toLowerCase().includes(query);
+  });
 
   return (
     <div className="space-y-4">
@@ -68,7 +75,7 @@ export function PromotionTable() {
                 <TableRow key={promo.id}>
                   <TableCell className="font-medium">{promo.name}</TableCell>
                   <TableCell>{promo.code}</TableCell>
-                  <TableCell>{promo.discount_type === 'percentage' ? `${promo.discount_value}%` : `Rp ${promo.discount_value.toLocaleString()}`}</TableCell>
+                  <TableCell>{promo.discount_type === 'PERCENTAGE' ? `${promo.discount_value}%` : `Rp ${promo.discount_value.toLocaleString()}`}</TableCell>
                   <TableCell>
                     <Badge className={statusColors[promo.is_active ? 'ACTIVE' : 'INACTIVE']}>{promo.is_active ? 'Active' : 'Inactive'}</Badge>
                   </TableCell>

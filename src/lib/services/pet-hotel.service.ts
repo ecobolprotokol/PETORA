@@ -18,7 +18,7 @@ export class PetHotelService {
     return data;
   }
 
-  static async listBookings(params: { page?: number; limit?: number; branch_id?: string; status?: string }) {
+  static async listBookings(params: { page?: number; limit?: number; branch_id?: string; status?: string; search?: string }) {
     const supabase = await createSupabaseClient();
     const { page = 1, limit = 20, branch_id, status } = params;
     let query = supabase.from('pet_hotel_bookings').select('*', { count: 'exact' }).order('check_in_date', { ascending: false }).range((page - 1) * limit, page * limit - 1);
@@ -26,7 +26,7 @@ export class PetHotelService {
     if (status) query = query.eq('status', status);
     const { data, error, count } = await query;
     if (error) throw error;
-    return { data, total: count ?? 0, page, limit, totalPages: Math.ceil((count ?? 0) / limit) } as PaginatedResponse<any>;
+    return { data, total: count ?? 0, page, limit, totalPages: Math.ceil((count ?? 0) / limit) } as PaginatedResponse<Record<string, unknown>>;
   }
 
   static async addLog(booking_id: string, input: { log_type: string; description: string }) {

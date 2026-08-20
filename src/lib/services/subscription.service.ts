@@ -1,5 +1,5 @@
 import { createSupabaseClient } from '@/lib/supabase/server';
-import type { PaginatedResponse } from '@/types';
+import type { PaginatedResponse, Subscription } from '@/types';
 
 export class SubscriptionService {
   static async listPlans() {
@@ -17,6 +17,6 @@ export class SubscriptionService {
     if (status) query = query.eq('status', status);
     const { data, error, count } = await query;
     if (error) throw error;
-    return { data, total: count ?? 0, page, limit, totalPages: Math.ceil((count ?? 0) / limit) } as PaginatedResponse<any>;
+    return { data, total: count ?? 0, page, limit, totalPages: Math.ceil((count ?? 0) / limit) } as PaginatedResponse<Subscription>;
   }
 }
