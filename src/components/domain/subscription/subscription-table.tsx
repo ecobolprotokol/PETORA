@@ -15,6 +15,7 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { Search, Plus } from 'lucide-react';
+import type { Subscription } from '@/types';
 
 const statusColors: Record<string, string> = {
   ACTIVE: 'bg-green-100 text-green-800',
@@ -27,7 +28,7 @@ export function SubscriptionTable() {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [], []);
+  const data = useMemo<Subscription[]>(() => [], []);
 
   return (
     <div className="space-y-4">
@@ -63,7 +64,7 @@ export function SubscriptionTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((sub: any) => (
+              {data.map((sub) => (
                 <TableRow key={sub.id}>
                   <TableCell>{sub.subscription_number}</TableCell>
                   <TableCell>{sub.customer_id}</TableCell>

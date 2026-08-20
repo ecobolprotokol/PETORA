@@ -32,12 +32,15 @@ function PaymentProofViewer({
     link.click();
   };
 
-  const handleOpenChange = (newOpen: boolean, eventDetails?: any) => {
+  const handleOpenChange = (
+    ...args: Parameters<NonNullable<PaymentProofViewerProps['onOpenChange']>>
+  ) => {
+    const [newOpen] = args;
     if (!newOpen) {
       setCurrentIndex(initialIndex);
       setZoom(1);
     }
-    if (onOpenChange) onOpenChange(newOpen, eventDetails);
+    onOpenChange?.(...args);
   };
 
   if (images.length === 0) return null;

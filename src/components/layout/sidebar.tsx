@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PawPrint, LayoutDashboard, Users, Cat, Calendar, Stethoscope, Hotel, Scissors, Package, ShoppingCart, FileText, CreditCard, Settings, ChevronLeft, ChevronRight } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { useUIStore } from '@/stores/ui-store';
 
 interface NavItem {
   label: string;
   href: string;
-  icon: any;
+  icon: LucideIcon;
   badge?: string | number;
   children?: NavItem[];
 }

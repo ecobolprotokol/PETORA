@@ -13,14 +13,14 @@ export const queryKeys = {
   customers: {
     all: ['customers'] as const,
     lists: () => ['customers', 'list'] as const,
-    list: (filters: Record<string, any>) => ['customers', 'list', filters] as const,
+    list: (filters: Record<string, unknown>) => ['customers', 'list', filters] as const,
     details: () => ['customers', 'detail'] as const,
     detail: (id: string) => ['customers', 'detail', id] as const,
   },
   pets: {
     all: ['pets'] as const,
     lists: () => ['pets', 'list'] as const,
-    list: (filters: Record<string, any>) => ['pets', 'list', filters] as const,
+    list: (filters: Record<string, unknown>) => ['pets', 'list', filters] as const,
     details: () => ['pets', 'detail'] as const,
     detail: (id: string) => ['pets', 'detail', id] as const,
     byCustomer: (customerId: string) => ['pets', 'byCustomer', customerId] as const,
@@ -29,7 +29,7 @@ export const queryKeys = {
   appointments: {
     all: ['appointments'] as const,
     lists: () => ['appointments', 'list'] as const,
-    list: (filters: Record<string, any>) => ['appointments', 'list', filters] as const,
+    list: (filters: Record<string, unknown>) => ['appointments', 'list', filters] as const,
     details: () => ['appointments', 'detail'] as const,
     detail: (id: string) => ['appointments', 'detail', id] as const,
     byDate: (date: string) => ['appointments', 'byDate', date] as const,
@@ -38,7 +38,7 @@ export const queryKeys = {
   products: {
     all: ['products'] as const,
     lists: () => ['products', 'list'] as const,
-    list: (filters: Record<string, any>) => ['products', 'list', filters] as const,
+    list: (filters: Record<string, unknown>) => ['products', 'list', filters] as const,
     details: () => ['products', 'detail'] as const,
     detail: (id: string) => ['products', 'detail', id] as const,
     lowStock: (branchId?: string) => ['products', 'lowStock', branchId] as const,
@@ -47,7 +47,7 @@ export const queryKeys = {
   invoices: {
     all: ['invoices'] as const,
     lists: () => ['invoices', 'list'] as const,
-    list: (filters: Record<string, any>) => ['invoices', 'list', filters] as const,
+    list: (filters: Record<string, unknown>) => ['invoices', 'list', filters] as const,
     details: () => ['invoices', 'detail'] as const,
     detail: (id: string) => ['invoices', 'detail', id] as const,
   },
