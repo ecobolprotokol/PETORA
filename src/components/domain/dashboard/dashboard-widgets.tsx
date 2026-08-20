@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 
 const widgets = [
@@ -13,23 +14,7 @@ const widgets = [
 type Widget = typeof widgets[number];
 
 export function DashboardWidgets() {
-  const [activeWidgets, setActiveWidgets] = useState<Widget[]>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('dashboard-widgets');
-      if (stored) {
-        try {
-          return JSON.parse(stored) as Widget[];
-        } catch {
-          return [...widgets];
-        }
-      }
-    }
-    return [...widgets];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('dashboard-widgets', JSON.stringify(activeWidgets));
-  }, [activeWidgets]);
+  const [activeWidgets, setActiveWidgets] = useState<Widget[]>([...widgets]);
 
   const toggleWidget = (widget: Widget) => {
     setActiveWidgets((prev) =>
@@ -58,25 +43,25 @@ export function DashboardWidgets() {
         {activeWidgets.includes('today-appointments') && (
           <Card className="p-6">
             <h3 className="font-semibold mb-4">Janji Temu Hari Ini</h3>
-            <p className="text-muted-foreground text-sm">8 janji temu menunggu</p>
+            <Link href="/dashboard/appointments" className="text-sm text-primary hover:underline">Buka daftar janji temu</Link>
           </Card>
         )}
         {activeWidgets.includes('revenue-chart') && (
           <Card className="p-6">
             <h3 className="font-semibold mb-4">Pendapatan</h3>
-            <p className="text-muted-foreground text-sm">Grafik pendapatan 7 hari terakhir</p>
+            <Link href="/dashboard/reports/financial" className="text-sm text-primary hover:underline">Buka laporan keuangan</Link>
           </Card>
         )}
         {activeWidgets.includes('low-stock') && (
           <Card className="p-6">
             <h3 className="font-semibold mb-4">Stok Menipis</h3>
-            <p className="text-muted-foreground text-sm">3 produk perlu restok</p>
+            <Link href="/dashboard/inventory" className="text-sm text-primary hover:underline">Buka inventori</Link>
           </Card>
         )}
         {activeWidgets.includes('pending-payments') && (
           <Card className="p-6">
             <h3 className="font-semibold mb-4">Pembayaran Pending</h3>
-            <p className="text-muted-foreground text-sm">5 pembayaran menunggu verifikasi</p>
+            <Link href="/dashboard/payments/verification" className="text-sm text-primary hover:underline">Buka verifikasi pembayaran</Link>
           </Card>
         )}
       </div>

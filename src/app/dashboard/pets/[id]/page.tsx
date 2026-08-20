@@ -6,16 +6,17 @@ import { MedicalRecordService } from '@/lib/services/medical-record.service';
 import { notFound } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
-export default async function PetDetailPage({ params }: { params: { id: string } }) {
-  const pet = await PetService.getById(params.id);
+export default async function PetDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const pet = await PetService.getById(id);
   if (!pet) {
     notFound();
   }
 
-  const appointments = await AppointmentService.list({ pet_id: params.id, limit: 10 });
-  const medicalRecords = await MedicalRecordService.list({ pet_id: params.id, limit: 10 });
+  const appointments = await AppointmentService.list({ pet_id: id, limit: 10 });
+  const medicalRecords = await MedicalRecordService.list({ pet_id: id, limit: 10 });
 
   return (
     <div className="space-y-6">
@@ -24,7 +25,12 @@ export default async function PetDetailPage({ params }: { params: { id: string }
           <h1 className="text-3xl font-bold">{pet.name}</h1>
           <p className="text-muted-foreground">{pet.species} {pet.breed ? `• ${pet.breed}` : ''}</p>
         </div>
-        <Button variant="outline">Edit</Button>
+        <Link
+          href={`/dashboard/pets/${pet.id}/edit`}
+          className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          Edit
+        </Link>
       </div>
       <Tabs defaultValue="overview">
         <TabsList>
@@ -70,7 +76,7 @@ export default async function PetDetailPage({ params }: { params: { id: string }
           </Card>
         </TabsContent>
         <TabsContent value="timeline">
-          <PetHealthTimeline petId={params.id} />
+          <PetHealthTimeline petId={id} />
         </TabsContent>
       </Tabs>
     </div>

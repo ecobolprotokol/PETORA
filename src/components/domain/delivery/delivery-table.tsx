@@ -27,11 +27,18 @@ const statusColors: Record<string, string> = {
   CANCELLED: 'bg-gray-100 text-gray-800',
 };
 
-export function DeliveryTable() {
+interface DeliveryTableProps {
+  deliveries: Delivery[];
+}
+
+export function DeliveryTable({ deliveries }: DeliveryTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Delivery[], []);
+  const data = useMemo(() => deliveries.filter((delivery) => {
+    const query = search.trim().toLowerCase();
+    return !query || delivery.delivery_number.toLowerCase().includes(query) || delivery.delivery_address.toLowerCase().includes(query) || delivery.status.toLowerCase().includes(query);
+  }), [deliveries, search]);
 
   return (
     <div className="space-y-4">

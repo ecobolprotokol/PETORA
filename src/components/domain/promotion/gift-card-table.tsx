@@ -17,11 +17,18 @@ import {
 import { Search, Plus } from 'lucide-react';
 import type { GiftCard } from '@/types/promotion';
 
-export function GiftCardTable() {
+interface GiftCardTableProps {
+  giftCards: GiftCard[];
+}
+
+export function GiftCardTable({ giftCards }: GiftCardTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as GiftCard[], []);
+  const data = useMemo(() => giftCards.filter((card) => {
+    const query = search.trim().toLowerCase();
+    return !query || card.code.toLowerCase().includes(query);
+  }), [giftCards, search]);
 
   return (
     <div className="space-y-4">

@@ -17,11 +17,18 @@ import {
 import { Search, Plus } from 'lucide-react';
 import type { ExpenseCategory } from '@/types/expense';
 
-export function ExpenseCategoryTable() {
+interface ExpenseCategoryTableProps {
+  categories: ExpenseCategory[];
+}
+
+export function ExpenseCategoryTable({ categories }: ExpenseCategoryTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as ExpenseCategory[], []);
+  const data = useMemo(() => categories.filter((category) => {
+    const query = search.trim().toLowerCase();
+    return !query || category.name.toLowerCase().includes(query) || (category.description ?? '').toLowerCase().includes(query);
+  }), [categories, search]);
 
   return (
     <div className="space-y-4">

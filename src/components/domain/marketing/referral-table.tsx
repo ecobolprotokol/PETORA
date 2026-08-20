@@ -23,11 +23,18 @@ const statusColors: Record<string, string> = {
   EXPIRED: 'bg-gray-100 text-gray-800',
 };
 
-export function ReferralTable() {
+interface ReferralTableProps {
+  referrals: Referral[];
+}
+
+export function ReferralTable({ referrals }: ReferralTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Referral[], []);
+  const data = useMemo(() => referrals.filter((referral) => {
+    const query = search.trim().toLowerCase();
+    return !query || referral.code.toLowerCase().includes(query) || referral.status.toLowerCase().includes(query);
+  }), [referrals, search]);
 
   return (
     <div className="space-y-4">

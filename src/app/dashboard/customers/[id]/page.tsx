@@ -2,18 +2,19 @@ import { CustomerService } from '@/lib/services/customer.service';
 import { CustomerForm } from '@/components/domain/customer/customer-form';
 import { notFound } from 'next/navigation';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PetCard } from '@/components/domain/pet/pet-card';
 import { PetService } from '@/lib/services/pet.service';
+import Link from 'next/link';
 
-export default async function CustomerDetailPage({ params }: { params: { id: string } }) {
-  const customer = await CustomerService.getById(params.id);
+export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const customer = await CustomerService.getById(id);
   if (!customer) {
     notFound();
   }
 
-  const petsResult = await PetService.list({ customer_id: params.id, limit: 10 });
+  const petsResult = await PetService.list({ customer_id: id, limit: 10 });
   const pets = petsResult.data;
 
   return (
@@ -24,7 +25,12 @@ export default async function CustomerDetailPage({ params }: { params: { id: str
           <p className="text-muted-foreground">Customer details</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => {}}>Edit</Button>
+          <Link
+            href={`/dashboard/customers/${customer.id}/edit`}
+            className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+          >
+            Edit
+          </Link>
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-3">

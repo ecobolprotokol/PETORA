@@ -13,8 +13,12 @@ import {
 } from '@/components/ui/table';
 import type { PerformanceMetric } from '@/types/employee';
 
-export function PerformanceTable() {
-  const data = useMemo(() => [] as PerformanceMetric[], []);
+interface PerformanceTableProps {
+  metrics: PerformanceMetric[];
+}
+
+export function PerformanceTable({ metrics }: PerformanceTableProps): React.ReactElement {
+  const data = useMemo(() => metrics, [metrics]);
 
   return (
     <div className="space-y-4">

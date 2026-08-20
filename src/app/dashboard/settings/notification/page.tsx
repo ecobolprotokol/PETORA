@@ -1,18 +1,6 @@
 import { SettingsLayout } from '@/components/domain/settings/settings-layout';
-import { Card } from '@/components/ui/card';
+import { CategorySettingsForm } from '@/components/domain/settings/category-settings-form';
 
 export default function NotificationSettingsPage() {
-  return (
-    <SettingsLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Notification Settings</h1>
-          <p className="text-muted-foreground">Konfigurasi notifikasi</p>
-        </div>
-        <Card className="p-6">
-          <p className="text-muted-foreground">Notification configuration coming soon</p>
-        </Card>
-      </div>
-    </SettingsLayout>
-  );
+  return <SettingsLayout><div className="space-y-6"><div><h1 className="text-3xl font-bold">Notification Settings</h1><p className="text-muted-foreground">Konfigurasi notifikasi dan pengingat</p></div><CategorySettingsForm category="NOTIFICATION" fields={[{ key: 'whatsapp_enabled', label: 'WhatsApp', description: 'Aktifkan pengiriman notifikasi melalui WhatsApp.', type: 'boolean', defaultValue: false }, { key: 'email_enabled', label: 'Email', description: 'Aktifkan pengiriman notifikasi melalui email.', type: 'boolean', defaultValue: false }, { key: 'sms_enabled', label: 'SMS', description: 'Aktifkan pengiriman notifikasi melalui SMS.', type: 'boolean', defaultValue: false }, { key: 'push_enabled', label: 'Push notification', description: 'Aktifkan notifikasi push di aplikasi.', type: 'boolean', defaultValue: false }, { key: 'appointment_reminder', label: 'Pengingat janji temu', description: 'Kirim pengingat sebelum jadwal kunjungan.', type: 'boolean', defaultValue: true }, { key: 'payment_reminder', label: 'Pengingat pembayaran', description: 'Kirim pengingat untuk pembayaran yang tertunda.', type: 'boolean', defaultValue: true }]} /></div></SettingsLayout>;
 }

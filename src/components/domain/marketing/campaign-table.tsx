@@ -25,11 +25,18 @@ const statusColors: Record<string, string> = {
   FAILED: 'bg-red-100 text-red-800',
 };
 
-export function CampaignTable() {
+interface CampaignTableProps {
+  campaigns: Campaign[];
+}
+
+export function CampaignTable({ campaigns }: CampaignTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Campaign[], []);
+  const data = useMemo(() => campaigns.filter((campaign) => {
+    const query = search.trim().toLowerCase();
+    return !query || campaign.name.toLowerCase().includes(query) || campaign.type.toLowerCase().includes(query);
+  }), [campaigns, search]);
 
   return (
     <div className="space-y-4">

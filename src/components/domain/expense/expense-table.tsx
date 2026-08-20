@@ -24,11 +24,18 @@ const statusColors: Record<string, string> = {
   PAID: 'bg-blue-100 text-blue-800',
 };
 
-export function ExpenseTable() {
+interface ExpenseTableProps {
+  expenses: Expense[];
+}
+
+export function ExpenseTable({ expenses }: ExpenseTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Expense[], []);
+  const data = useMemo(() => expenses.filter((expense) => {
+    const query = search.trim().toLowerCase();
+    return !query || expense.category.toLowerCase().includes(query) || expense.status.toLowerCase().includes(query);
+  }), [expenses, search]);
 
   return (
     <div className="space-y-4">

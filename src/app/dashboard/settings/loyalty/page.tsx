@@ -1,18 +1,6 @@
 import { SettingsLayout } from '@/components/domain/settings/settings-layout';
-import { Card } from '@/components/ui/card';
+import { CategorySettingsForm } from '@/components/domain/settings/category-settings-form';
 
 export default function LoyaltySettingsPage() {
-  return (
-    <SettingsLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Loyalty Settings</h1>
-          <p className="text-muted-foreground">Konfigurasi program loyalitas</p>
-        </div>
-        <Card className="p-6">
-          <p className="text-muted-foreground">Loyalty configuration coming soon</p>
-        </Card>
-      </div>
-    </SettingsLayout>
-  );
+  return <SettingsLayout><div className="space-y-6"><div><h1 className="text-3xl font-bold">Loyalty Settings</h1><p className="text-muted-foreground">Konfigurasi program loyalitas</p></div><CategorySettingsForm category="LOYALTY" fields={[{ key: 'enabled', label: 'Aktifkan loyalty', description: 'Hitung poin untuk pelanggan secara otomatis.', type: 'boolean', defaultValue: true }, { key: 'points_per_rupiah', label: 'Rupiah per poin', description: 'Nilai transaksi untuk mendapatkan satu poin.', type: 'number', defaultValue: 1000 }, { key: 'point_value', label: 'Nilai satu poin', description: 'Nilai rupiah saat poin digunakan.', type: 'number', defaultValue: 100 }, { key: 'expiry_months', label: 'Masa berlaku poin', description: 'Masa berlaku poin dalam bulan.', type: 'number', defaultValue: 12 }, { key: 'birthday_bonus', label: 'Bonus ulang tahun', description: 'Berikan bonus poin pada hari ulang tahun pelanggan.', type: 'boolean', defaultValue: true }, { key: 'referral_bonus', label: 'Bonus referral', description: 'Poin yang diberikan saat referral berhasil.', type: 'number', defaultValue: 100 }]} /></div></SettingsLayout>;
 }

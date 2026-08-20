@@ -13,8 +13,12 @@ import {
 } from '@/components/ui/table';
 import type { CommissionRule } from '@/types/employee';
 
-export function CommissionTable() {
-  const data = useMemo(() => [] as CommissionRule[], []);
+interface CommissionTableProps {
+  rules: CommissionRule[];
+}
+
+export function CommissionTable({ rules }: CommissionTableProps): React.ReactElement {
+  const data = useMemo(() => rules, [rules]);
 
   return (
     <div className="space-y-4">

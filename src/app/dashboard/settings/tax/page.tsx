@@ -1,18 +1,6 @@
 import { SettingsLayout } from '@/components/domain/settings/settings-layout';
-import { Card } from '@/components/ui/card';
+import { CategorySettingsForm } from '@/components/domain/settings/category-settings-form';
 
 export default function TaxSettingsPage() {
-  return (
-    <SettingsLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Tax Settings</h1>
-          <p className="text-muted-foreground">Konfigurasi pajak</p>
-        </div>
-        <Card className="p-6">
-          <p className="text-muted-foreground">Tax configuration coming soon</p>
-        </Card>
-      </div>
-    </SettingsLayout>
-  );
+  return <SettingsLayout><div className="space-y-6"><div><h1 className="text-3xl font-bold">Tax Settings</h1><p className="text-muted-foreground">Konfigurasi pajak transaksi</p></div><CategorySettingsForm category="TAX" fields={[{ key: 'ppn_enabled', label: 'Aktifkan PPN', description: 'Terapkan PPN pada transaksi.', type: 'boolean', defaultValue: false }, { key: 'ppn_rate', label: 'Tarif PPN', description: 'Persentase PPN yang berlaku.', type: 'number', defaultValue: 11 }, { key: 'pph_enabled', label: 'Aktifkan PPh', description: 'Terapkan PPh sesuai konfigurasi bisnis.', type: 'boolean', defaultValue: false }, { key: 'pph_rate', label: 'Tarif PPh', description: 'Persentase PPh yang berlaku.', type: 'number', defaultValue: 0 }, { key: 'inclusive', label: 'Pajak termasuk harga', description: 'Harga produk sudah termasuk pajak.', type: 'boolean', defaultValue: false }, { key: 'tax_id_number', label: 'NPWP', description: 'Nomor identitas pajak toko.', type: 'text', defaultValue: '' }]} /></div></SettingsLayout>;
 }

@@ -17,11 +17,18 @@ import {
 import { Search, Plus } from 'lucide-react';
 import type { Kiosk } from '@/types/kiosk';
 
-export function KioskTable() {
+interface KioskTableProps {
+  kiosks: Kiosk[];
+}
+
+export function KioskTable({ kiosks }: KioskTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Kiosk[], []);
+  const data = useMemo(() => kiosks.filter((kiosk) => {
+    const query = search.trim().toLowerCase();
+    return !query || kiosk.device_name.toLowerCase().includes(query) || kiosk.device_id.toLowerCase().includes(query);
+  }), [kiosks, search]);
 
   return (
     <div className="space-y-4">

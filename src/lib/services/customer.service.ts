@@ -17,13 +17,16 @@ export class CustomerService {
       .from('customers')
       .select('*', { count: 'exact' })
       .eq('is_active', is_active)
-      .is('deleted_at', null)
       .order('created_at', { ascending: false })
       .range((page - 1) * limit, page * limit - 1);
 
     if (branch_id) query = query.eq('branch_id', branch_id);
-    if (search) query = query.or(`name.ilike.%${search}%,phone.ilike.%${search}%,email.ilike.%${search}%`);
-    if (tags?.length) query = query.overlaps('tags', tags);
+    if (search) {
+      const normalizedSearch = search.replace(/[%,()]/g, (character) => `\\${character}`);
+      query = query.or(
+        `name.ilike.%${normalizedSearch}%,phone.ilike.%${normalizedSearch}%,email.ilike.%${normalizedSearch}%`,
+      );
+    }
 
     const { data, error, count } = await query;
     if (error) throw error;
@@ -43,7 +46,6 @@ export class CustomerService {
       .from('customers')
       .select('*')
       .eq('id', id)
-      .is('deleted_at', null)
       .single();
     if (error) return null;
     return data as Customer;

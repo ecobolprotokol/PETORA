@@ -17,11 +17,18 @@ import {
 import { Search, Plus } from 'lucide-react';
 import type { Segment } from '@/types/marketing';
 
-export function SegmentTable() {
+interface SegmentTableProps {
+  segments: Segment[];
+}
+
+export function SegmentTable({ segments }: SegmentTableProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const data = useMemo(() => [] as Segment[], []);
+  const data = useMemo(() => segments.filter((segment) => {
+    const query = search.trim().toLowerCase();
+    return !query || segment.name.toLowerCase().includes(query) || (segment.description ?? '').toLowerCase().includes(query);
+  }), [segments, search]);
 
   return (
     <div className="space-y-4">

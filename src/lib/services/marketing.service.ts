@@ -2,6 +2,7 @@ import { createSupabaseClient } from '@/lib/supabase/server';
 import type { PaginatedResponse } from '@/types';
 
 import type { Promotion, Voucher } from '@/types/promotion';
+import type { Referral, Segment } from '@/types/marketing';
 
 export class MarketingService {
   static async listPromotions(): Promise<Promotion[]> {
@@ -16,6 +17,20 @@ export class MarketingService {
     const { data, error } = await supabase.from('vouchers').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return (data ?? []) as unknown as Voucher[];
+  }
+
+  static async listSegments(): Promise<Segment[]> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('customer_segments').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as unknown as Segment[];
+  }
+
+  static async listReferrals(): Promise<Referral[]> {
+    const supabase = await createSupabaseClient();
+    const { data, error } = await supabase.from('referrals').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as unknown as Referral[];
   }
 
   static async listCampaigns(params: { page?: number; limit?: number; status?: string }) {
