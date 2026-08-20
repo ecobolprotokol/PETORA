@@ -7,14 +7,16 @@ import { PawPrint } from 'lucide-react';
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30">
-      <div className="w-full max-w-md px-4">
-        <div className="flex flex-col items-center mb-8">
-          <PawPrint className="h-12 w-12 text-primary mb-2" />
-          <h1 className="text-2xl font-bold">Petora</h1>
-          <p className="text-muted-foreground">Sistem Manajemen Pet</p>
+    <div className="petora-dots flex min-h-screen items-center justify-center bg-background px-4 py-8">
+      <div className="w-full max-w-md">
+        <div className="mb-8 flex flex-col items-center gap-3 text-center">
+          <div className="flex size-20 items-center justify-center rounded-[2rem] bg-primary text-primary-foreground shadow-xl shadow-primary/25">
+            <PawPrint className="size-10" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight">Petora</h1>
+          <p className="text-muted-foreground">Ruang kerja yang lebih ceria untuk bisnis petcare</p>
         </div>
-        <div className="bg-card border rounded-xl p-6 shadow-sm">
+        <div className="petora-surface rounded-3xl border border-primary/10 p-6 sm:p-8">
           {children}
         </div>
         <p className="text-center text-sm text-muted-foreground mt-6">

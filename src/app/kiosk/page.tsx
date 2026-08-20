@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { QrCode, Calendar, Clock } from 'lucide-react';
+import { QrCode, Calendar, Clock, PawPrint } from 'lucide-react';
 import Link from 'next/link';
 
 export default function KioskHome() {
@@ -41,12 +41,15 @@ export default function KioskHome() {
   ];
 
   return (
-    <div className="space-y-6">
-      <section>
-        <h1 className="text-3xl font-bold mb-2">Selamat Datang di Petora</h1>
-        <p className="text-lg text-muted-foreground">
-          Self-Service Kiosk - Silakan pilih layanan di bawah ini
-        </p>
+    <div className="petora-dots flex flex-col gap-6 rounded-3xl bg-background p-4 sm:p-8">
+      <section className="petora-surface-playful rounded-3xl p-6 text-center sm:p-10">
+        <div className="mx-auto flex max-w-2xl flex-col items-center gap-3">
+          <div className="flex size-16 items-center justify-center rounded-3xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+            <PawPrint className="size-8" />
+          </div>
+          <h1 className="text-balance text-3xl font-bold sm:text-4xl">Selamat Datang di Petora</h1>
+          <p className="text-pretty leading-6 text-muted-foreground">Pilih layanan untuk memulai perjalanan perawatan sahabat Anda.</p>
+        </div>
       </section>
 
       <section>

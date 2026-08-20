@@ -68,7 +68,7 @@ export function Sidebar() {
               {sidebarOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
             </button>
           </div>
-          <nav className="flex-1 overflow-y-auto py-4 px-2">
+          <nav className="petora-dots flex-1 overflow-y-auto px-3 py-5">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -76,8 +76,8 @@ export function Sidebar() {
                 className={cn(
                   'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
                   pathname === item.href
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-secondary-foreground'
                 )}
               >
                 <item.icon className="h-5 w-5 shrink-0" />

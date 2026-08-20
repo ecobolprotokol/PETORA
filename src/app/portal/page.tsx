@@ -14,18 +14,27 @@ interface DashboardStats {
   recentInvoices: Invoice[];
 }
 
-function StatCard({ title, value, subtitle, href, icon: Icon }: {
+function StatCard({ title, value, subtitle, href, icon: Icon, tone }: {
+  tone: 'primary' | 'sunshine' | 'sky' | 'lavender';
   title: string;
   value: string | number;
   subtitle?: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
 }) {
+  const toneClasses = {
+    primary: 'bg-primary/15 text-primary',
+    sunshine: 'bg-[hsl(var(--sunshine)/0.28)] text-foreground',
+    sky: 'bg-[hsl(var(--sky)/0.22)] text-foreground',
+    lavender: 'bg-[hsl(var(--lavender)/0.24)] text-foreground',
+  }[tone];
+
   return (
     <Link href={href}>
       <Card className="rounded-2xl p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10 text-primary">
+          <div className={`rounded-2xl p-3 ${toneClasses}`}>
+
             <Icon className="size-5" />
           </div>
           <div className="flex-1 min-w-0">
@@ -76,24 +85,28 @@ export default function PortalHome() {
           value={stats?.upcomingAppointments?.length ?? 0}
           href="/(portal)/bookings"
           icon={Calendar}
+          tone="primary"
         />
         <StatCard
           title="Total Pets"
           value={stats?.totalPets ?? 0}
           href="/(portal)/pets"
           icon={PawPrint}
+          tone="sunshine"
         />
         <StatCard
           title="Rekam Medis"
           value={stats?.recentMedicalRecords?.length ?? 0}
           href="/(portal)/medical-records"
           icon={FileText}
+          tone="lavender"
         />
         <StatCard
           title="Poin Loyalty"
           value={stats?.loyaltyPoints ?? 0}
           href="/(portal)/loyalty"
           icon={Gift}
+          tone="sky"
         />
       </div>
 
