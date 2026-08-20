@@ -22,14 +22,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && isAuthRoute) {
-    const role = getRole(user.user_metadata);
+    const role = getRole(user.app_metadata);
     return NextResponse.redirect(
       new URL(role === 'CUSTOMER' ? '/portal' : '/dashboard', request.url)
     );
   }
 
   if (user) {
-    const role = getRole(user.user_metadata);
+    const role = getRole(user.app_metadata);
     if (isPortalRoute && role !== 'CUSTOMER') {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
