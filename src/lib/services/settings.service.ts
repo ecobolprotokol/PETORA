@@ -41,21 +41,21 @@ export class SettingsService {
     return data?.value as T;
   }
 
-  static async getPublicSettings(): Promise<Record<string, any>> {
+  static async getPublicSettings(): Promise<Record<string, unknown>> {
     const supabase = await createSupabaseClient();
     const { data, error } = await supabase
       .from('settings')
       .select('key, value')
       .eq('is_public', true);
     if (error) throw error;
-    const result: Record<string, any> = {};
+    const result: Record<string, unknown> = {};
     for (const item of data ?? []) {
       result[item.key] = item.value;
     }
     return result;
   }
 
-  static async update(key: string, value: any, updatedBy: string): Promise<void> {
+  static async update(key: string, value: unknown, updatedBy: string): Promise<void> {
     const supabase = await createSupabaseClient();
     const { error } = await supabase
       .from('settings')
@@ -67,7 +67,7 @@ export class SettingsService {
   }
 
   static async updateBatch(
-    updates: Array<{ key: string; value: any }>,
+    updates: Array<{ key: string; value: unknown }>,
     updatedBy: string
   ): Promise<void> {
     const supabase = await createSupabaseClient();
@@ -93,7 +93,7 @@ export class SettingsService {
       key,
       value: config.value,
       description: config.description,
-      is_public: (config as any).is_public ?? false,
+      is_public: 'is_public' in config ? config.is_public : false,
     }));
     const { error } = await supabase.from('settings').insert(defaults);
     if (error) throw error;

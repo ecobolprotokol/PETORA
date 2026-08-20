@@ -26,7 +26,7 @@ export class PetHotelService {
     if (status) query = query.eq('status', status);
     const { data, error, count } = await query;
     if (error) throw error;
-    return { data, total: count ?? 0, page, limit, totalPages: Math.ceil((count ?? 0) / limit) } as PaginatedResponse<any>;
+    return { data, total: count ?? 0, page, limit, totalPages: Math.ceil((count ?? 0) / limit) } as PaginatedResponse<Record<string, unknown>>;
   }
 
   static async addLog(booking_id: string, input: { log_type: string; description: string }) {
