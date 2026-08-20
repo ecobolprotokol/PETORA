@@ -50,8 +50,8 @@ export class AppointmentService {
       .from('appointments')
       .select('*')
       .eq('id', id)
-      .single();
-    if (error) return null;
+      .maybeSingle();
+    if (error) throw error;
     return data as Appointment;
   }
 

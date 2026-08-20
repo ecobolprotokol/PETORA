@@ -45,8 +45,8 @@ export class InvoiceService {
       .from('invoices')
       .select('*')
       .eq('id', id)
-      .single();
-    if (error) return null;
+      .maybeSingle();
+    if (error) throw error;
     return data as Invoice;
   }
 
@@ -68,7 +68,7 @@ export class InvoiceService {
       .select('*')
       .eq('invoice_number', invoiceNumber)
       .maybeSingle();
-    if (error) return null;
+    if (error) throw error;
     return data as Invoice;
   }
 
