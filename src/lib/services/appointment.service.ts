@@ -19,16 +19,18 @@ export class AppointmentService {
     let query = supabase
       .from('appointments')
       .select('*', { count: 'exact' })
-      .order('appointment_date', { ascending: false })
+      .order('scheduled_at', { ascending: false })
       .range((page - 1) * limit, page * limit - 1);
 
     if (customer_id) query = query.eq('customer_id', customer_id);
     if (pet_id) query = query.eq('pet_id', pet_id);
-    if (doctor_id) query = query.eq('doctor_id', doctor_id);
     if (status) query = query.eq('status', status);
-    if (appointment_date) query = query.eq('appointment_date', appointment_date);
+    if (appointment_date) query = query.gte('scheduled_at', `${appointment_date}T00:00:00.000Z`).lt('scheduled_at', `${appointment_date}T23:59:59.999Z`);
     if (branch_id) query = query.eq('branch_id', branch_id);
-    if (search) query = query.or(`appointment_type.ilike.%${search}%,complaint.ilike.%${search}%`);
+    if (search) {
+      const normalizedSearch = search.replace(/[%,()]/g, (character) => `\\${character}`);
+      query = query.or(`service_type.ilike.%${normalizedSearch}%,notes.ilike.%${normalizedSearch}%`);
+    }
 
     const { data, error, count } = await query;
     if (error) throw error;

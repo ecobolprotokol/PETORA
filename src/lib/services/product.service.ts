@@ -18,14 +18,15 @@ export class ProductService {
     let query = supabase
       .from('products')
       .select('*', { count: 'exact' })
-      .eq('status', status)
-      .is('deleted_at', null)
+      .eq('is_active', status === 'ACTIVE')
       .order('name', { ascending: true })
       .range((page - 1) * limit, page * limit - 1);
 
     if (branch_id) query = query.eq('branch_id', branch_id);
-    if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,barcode.ilike.%${search}%`);
-    if (category_id) query = query.eq('category_id', category_id);
+    if (search) {
+      const normalizedSearch = search.replace(/[%,()]/g, (character) => `\\${character}`);
+      query = query.or(`name.ilike.%${normalizedSearch}%,sku.ilike.%${normalizedSearch}%`);
+    }
     if (expiring_soon) {
       const thirtyDaysFromNow = new Date();
       thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
@@ -54,8 +55,7 @@ export class ProductService {
     let query = supabase
       .from('products')
       .select('*')
-      .eq('status', 'ACTIVE')
-      .is('deleted_at', null);
+      .eq('is_active', true);
 
     if (branch_id) query = query.eq('branch_id', branch_id);
 
@@ -74,10 +74,7 @@ export class ProductService {
     let query = supabase
       .from('products')
       .select('*')
-      .eq('status', 'ACTIVE')
-      .is('deleted_at', null)
-      .lte('expiry_date', expiryDate.toISOString())
-      .gt('expiry_date', new Date().toISOString());
+      .eq('is_active', true);
 
     if (branch_id) query = query.eq('branch_id', branch_id);
 
@@ -92,7 +89,7 @@ export class ProductService {
       .from('products')
       .select('*')
       .eq('id', id)
-      .is('deleted_at', null)
+      .eq('is_active', true)
       .single();
     if (error) return null;
     return data as Product;
@@ -105,7 +102,7 @@ export class ProductService {
       .select('id, name, photo_url')
       .eq('is_active', true)
       .order('name');
-    if (error) return [];
+    if (error) throw error;
     return (data || []) as { id: string; name: string; photo_url: string | null }[];
   }
 
@@ -116,7 +113,7 @@ export class ProductService {
       .select('id, name')
       .eq('is_active', true)
       .order('name');
-    if (error) return [];
+    if (error) throw error;
     return (data || []) as { id: string; name: string }[];
   }
 }

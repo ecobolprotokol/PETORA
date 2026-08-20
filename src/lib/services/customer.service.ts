@@ -17,7 +17,6 @@ export class CustomerService {
       .from('customers')
       .select('*', { count: 'exact' })
       .eq('is_active', is_active)
-      .is('deleted_at', null)
       .order('created_at', { ascending: false })
       .range((page - 1) * limit, page * limit - 1);
 
@@ -28,7 +27,6 @@ export class CustomerService {
         `name.ilike.%${normalizedSearch}%,phone.ilike.%${normalizedSearch}%,email.ilike.%${normalizedSearch}%`,
       );
     }
-    if (tags?.length) query = query.overlaps('tags', tags);
 
     const { data, error, count } = await query;
     if (error) throw error;
@@ -48,7 +46,6 @@ export class CustomerService {
       .from('customers')
       .select('*')
       .eq('id', id)
-      .is('deleted_at', null)
       .single();
     if (error) return null;
     return data as Customer;

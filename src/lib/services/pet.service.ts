@@ -15,7 +15,7 @@ export class PetService {
     let query = supabase
       .from('pets')
       .select('*', { count: 'exact' })
-      .is('deleted_at', null)
+      .eq('is_active', true)
       .order('name', { ascending: true })
       .range((page - 1) * limit, page * limit - 1);
 
@@ -41,7 +41,7 @@ export class PetService {
       .from('pets')
       .select('*')
       .eq('id', id)
-      .is('deleted_at', null)
+      .eq('is_active', true)
       .single();
     if (error) return null;
     return data as Pet;
