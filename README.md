@@ -98,7 +98,7 @@ npm run seed         # Seed database
 
 ## Seed Demo Accounts
 
-Demo accounts are created directly through the Supabase Auth Admin API and synchronized to `public.profiles`. All demo accounts are configured through one server-only environment variable, `DEMO_ACCOUNTS`; the seeder does not use JSON configuration or hardcoded credentials.
+The default SQL seed (`supabase/seed/0001_default_data.sql`) provisions one aligned legacy owner identity: `owner@petora.app` / `Demo Owner`. The Supabase Auth account is then created or updated by `scripts/seed-demo-accounts.mjs`, which synchronizes the same identity to `public.profiles`. All Auth credentials are configured through one server-only environment variable, `DEMO_ACCOUNTS`; passwords are never stored in SQL.
 
 ```bash
 export SUPABASE_URL="https://<project-ref>.supabase.co"

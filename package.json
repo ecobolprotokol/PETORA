@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:demo-accounts": "node --env-file-if-exists=.env.development.local --env-file-if-exists=.env.local scripts/seed-demo-accounts.mjs"
+    "seed": "node --env-file-if-exists=.env.development.local --env-file-if-exists=.env.local scripts/seed-demo-accounts.mjs",
+    "seed:demo-accounts": "npm run seed"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
