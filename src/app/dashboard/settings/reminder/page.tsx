@@ -1,18 +1,6 @@
 import { SettingsLayout } from '@/components/domain/settings/settings-layout';
-import { Card } from '@/components/ui/card';
+import { CategorySettingsForm } from '@/components/domain/settings/category-settings-form';
 
 export default function ReminderSettingsPage() {
-  return (
-    <SettingsLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Reminder Settings</h1>
-          <p className="text-muted-foreground">Konfigurasi pengingat</p>
-        </div>
-        <Card className="p-6">
-          <p className="text-muted-foreground">Reminder configuration coming soon</p>
-        </Card>
-      </div>
-    </SettingsLayout>
-  );
+  return <SettingsLayout><div className="space-y-6"><div><h1 className="text-3xl font-bold">Reminder Settings</h1><p className="text-muted-foreground">Konfigurasi pengingat layanan</p></div><CategorySettingsForm category="REMINDER" fields={[{ key: 'appointment_enabled', label: 'Pengingat janji temu', description: 'Ingatkan pelanggan sebelum janji temu.', type: 'boolean', defaultValue: true }, { key: 'vaccination_enabled', label: 'Pengingat vaksinasi', description: 'Ingatkan jadwal vaksinasi berikutnya.', type: 'boolean', defaultValue: true }, { key: 'grooming_enabled', label: 'Pengingat grooming', description: 'Ingatkan pelanggan untuk grooming berkala.', type: 'boolean', defaultValue: true }, { key: 'hotel_enabled', label: 'Pengingat pet hotel', description: 'Ingatkan jadwal check-in dan check-out hotel.', type: 'boolean', defaultValue: true }, { key: 'expiry_enabled', label: 'Pengingat kedaluwarsa', description: 'Ingatkan stok yang mendekati kedaluwarsa.', type: 'boolean', defaultValue: true }]} /></div></SettingsLayout>;
 }

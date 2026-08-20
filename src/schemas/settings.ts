@@ -73,8 +73,9 @@ export const loyaltySettingsSchema = z.object({
 });
 
 export const updateSettingSchema = z.object({
+  category: z.string().min(1),
   key: z.string().min(1),
-  value: z.any(),
+  value: z.unknown(),
 });
 
 export const updateSettingsBatchSchema = z.object({
