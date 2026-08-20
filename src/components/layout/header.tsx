@@ -10,7 +10,7 @@ export function Header() {
   const { toggleSidebar } = useUIStore();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-2 border-b bg-background/90 px-3 backdrop-blur supports-[backdrop-filter]:bg-background/70 sm:gap-4 sm:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-2 border-b border-primary/10 bg-background/90 px-3 backdrop-blur supports-[backdrop-filter]:bg-background/70 sm:gap-4 sm:px-6">
       <Button variant="ghost" size="icon" className="lg:hidden" onClick={toggleSidebar} aria-label="Buka menu navigasi">
         <Menu />
       </Button>

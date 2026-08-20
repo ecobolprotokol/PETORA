@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #fffaf5;
+  --color-background: #fff8f0;
   --color-foreground: #24312f;
+  --color-sunshine: #f7c948;
+  --color-sky: #58b8e8;
+  --color-lavender: #a78bfa;
+  --color-mint: #70d6b0;
+  --color-coral: #f47c6c;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -79,15 +84,20 @@
     --card: 0 0% 100%;
     --card-foreground: 168 18% 17%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 168 18% 17%;
     --primary: 168 51% 36%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 36 70% 93%;
-    --secondary-foreground: 168 25% 22%;
-    --muted: 36 45% 94%;
+    --secondary: 46 92% 86%;
+    --secondary-foreground: 34 55% 24%;
+    --muted: 32 50% 94%;
     --muted-foreground: 168 10% 43%;
-    --accent: 12 88% 94%;
-    --accent-foreground: 12 58% 34%;
+    --accent: 11 87% 91%;
+    --accent-foreground: 11 58% 32%;
+    --sunshine: 46 92% 63%;
+    --sky: 199 76% 63%;
+    --lavender: 255 91% 77%;
+    --mint: 158 55% 64%;
+    --coral: 7 84% 69%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --success: 142 72% 29%;
@@ -103,15 +113,29 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 5.9%;
-    --card-foreground: 0 0% 98%;
-    --primary: 142 72% 45%;
-    --primary-foreground: 0 0% 100%;
+    --background: 168 24% 9%;
+    --foreground: 40 40% 97%;
+    --card: 168 20% 13%;
+    --card-foreground: 40 40% 97%;
+    --popover: 168 20% 13%;
+    --popover-foreground: 40 40% 97%;
+    --primary: 158 55% 64%;
+    --primary-foreground: 168 24% 9%;
+    --secondary: 45 63% 30%;
+    --secondary-foreground: 45 100% 92%;
+    --muted: 168 14% 18%;
+    --muted-foreground: 40 15% 72%;
+    --accent: 11 45% 30%;
+    --accent-foreground: 11 100% 92%;
+    --sunshine: 46 92% 63%;
+    --sky: 199 76% 63%;
+    --lavender: 255 91% 77%;
+    --mint: 158 55% 64%;
+    --coral: 7 84% 69%;
     --destructive: 0 62.8% 50%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --border: 168 14% 24%;
+    --input: 168 14% 24%;
+    --ring: 158 55% 64%;
   }
 }
 
@@ -122,6 +146,22 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  .petora-surface {
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--secondary) / 0.42) 100%);
+    box-shadow: 0 18px 45px -28px hsl(var(--primary) / 0.45);
+  }
+
+  .petora-surface-playful {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--secondary)) 100%);
+  }
+
+  .petora-dots {
+    background-image: radial-gradient(hsl(var(--sunshine) / 0.4) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
   }
 }
 
